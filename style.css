@@ -1,0 +1,11 @@
+/*
+ Theme Name: CapsLock
+ Author: Dima Solovey
+ Version: 0.8
+ */
+
+*, *:after, *:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
