@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Include dependencies.
+ */
+include_once 'inc/helpers.php';
+include_once 'inc/template-functions.php';
+include_once 'inc/shortcodes.php';
+include_once 'inc/register-entities.php';
+include_once 'inc/breadcrumbs.php';
+
+/**
+ * Optional files.
+ */
+include_once 'inc/check-required-plugins.php';
+
+/**
  * Theme supports setup.
  */
 add_theme_support( 'html5', [
@@ -67,12 +81,3 @@ function capslock_enqueue_script() {
 	wp_enqueue_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'capslock_enqueue_script' );
-
-/**
- * Include dependencies.
- */
-include_once 'inc/helpers.php';
-include_once 'inc/template-functions.php';
-include_once 'inc/shortcodes.php';
-include_once 'inc/register-entities.php';
-include_once 'inc/breadcrumbs.php';
