@@ -7,7 +7,7 @@ const browserSync = require("browser-sync").create();
 
 sass.compiler = require("node-sass");
 
-const CSSDestFolder = ".assets/css";
+const CSSDestFolder = "./assets/css";
 const SASSFilesPath = ["./sass/**/*.scss", "./sass/**/*.sass"];
 
 const sassBuild = () => {
