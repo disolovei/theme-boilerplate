@@ -14,3 +14,7 @@ function capclock_return_if_true( $condition, $value, $otherwise_return = null )
 function capclock_echo_if_true( $condition, $value, $otherwise_return = null ) {
 	echo capclock_return_if_true( $condition, $value, $otherwise_return );
 }
+
+function capslock_diff_by_env( $prod_value = '', $stage_value = '' ) {
+    return capslock_is_prod() ? $prod_value : $stage_value;
+}

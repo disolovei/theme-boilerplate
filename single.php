@@ -1,4 +1,13 @@
 <?php get_header(); ?>
 
+<?php
+    while ( have_posts() ) : the_post();
 
-<?php get_footer();
+    the_post_thumbnail();
+
+    the_content();
+
+    endwhile;
+?>
+
+<?php get_footer(); ?>

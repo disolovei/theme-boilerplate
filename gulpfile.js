@@ -7,8 +7,9 @@ const browserSync = require("browser-sync").create();
 
 sass.compiler = require("node-sass");
 
-const CSSDestFolder = ".assets/css";
+const CSSDestFolder = "./assets/css";
 const SASSFilesPath = ["./sass/**/*.scss", "./sass/**/*.sass"];
+const JSFilesPath   = "./assets/js";
 
 const sassBuild = () => {
     return gulp
@@ -19,11 +20,11 @@ const sassBuild = () => {
 
 const cssBuild = () => {
     return sassBuild()
-        .pipe(gulp.src([CSSDestFolder + "/**/*.css", "!" + CSSDestFolder + "/**/*.min.css"]))
+        .pipe(gulp.src([CSSDestFolder + "/**/*.css", "!" + CSSDestFolder + "/**/*.min.css", "!" + CSSDestFolder + "/modules/**/*.min.css"]))
         .pipe(sourcemaps.init())
         .pipe(require('gulp-group-css-media-queries')())
-        .pipe(require("gulp-clean-css")({ 
-            compatibility: "ie8", 
+        .pipe(require("gulp-clean-css")({
+            compatibility: "ie8",
             level: {
                 1: {
                     specialComments: 0
@@ -39,6 +40,19 @@ const cssBuild = () => {
         .pipe(gulp.dest(CSSDestFolder));
 };
 
+const jsBuild = () => {
+    return gulp
+        .src([JSFilesPath + "/**/*.js", "!" + JSFilesPath + "/**/*.min.js", "!" + JSFilesPath + "/modules/**/*.js"])
+        .pipe(sourcemaps.init())
+        .pipe(require("gulp-babel")({
+            presets: ['@babel/env']
+        }))
+        .pipe(require("gulp-uglify")())
+        .pipe(require("gulp-rename")(path => {path.basename += ".min";}))
+        .pipe(sourcemaps.write("./"))
+        .pipe(gulp.dest(JSFilesPath));
+};
+
 const liveReload = () => {
     browserSync.init({
         server: "./"
@@ -48,8 +62,10 @@ const liveReload = () => {
     gulp.watch("./*.html").on("change", browserSync.reload);
 };
 
-gulp.task("reload", liveReload);
-gulp.task("build", cssBuild);
-gulp.task("dev", () => {
+gulp.task("watch", () => {
     gulp.watch(SASSFilesPath, sassBuild);
 });
+gulp.task("reload", liveReload);
+gulp.task("buildJS", jsBuild);
+gulp.task("buildCSS", cssBuild);
+gulp.task("build", gulp.parallel([cssBuild, jsBuild]));
