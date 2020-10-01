@@ -40,11 +40,19 @@ const cssBuild = () => {
 };
 
 const jsBuild = () => {
-    return gulp
-        .src([JSFilesPath + "/**/*.js", "!" + JSFilesPath + "/**/*.min.js", "!" + JSFilesPath + "/modules/**/*.js"])
+    return require("gulp-merge")(
+            gulp.src([JSFilesPath + "/**/*.js", "!" + JSFilesPath + "/**/*.min.js", "!" + JSFilesPath + "/modules/**/*.js"]),
+            gulp.src(require("path").join(__dirname, 'node_modules', '@babel', 'polyfill', 'browser.js'))
+        )
         .pipe(sourcemaps.init())
         .pipe(require("gulp-babel")({
-            presets: ['@babel/env']
+            presets: [
+                [
+                    "@babel/preset-env",
+                    { targets: "> 0.10%, not dead" },
+                ]
+            ],
+            plugins: ['@babel/transform-runtime']
         }))
         .pipe(require("gulp-uglify")())
         .pipe(require("gulp-rename")(path => {path.basename += ".min";}))
