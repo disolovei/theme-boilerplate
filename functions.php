@@ -25,6 +25,9 @@ include_once 'inc/theme-setup.php';
  */
 // include_once 'inc/breadcrumbs.php';
 // include_once 'inc/check-required-plugins.php';
+include_once 'inc/classes/class-capslock-cache.php';
+include_once 'inc/cache.php';
+include_once 'inc/acf-cache.php';
 
 /**
  * Work with scrips and styles.
@@ -47,7 +50,7 @@ if ( ! current_theme_supports( 'html5', 'style' ) ) {
 /**
  * Include scripts
  */
-function capslock_enqueue_script() {
+function capslock_enqueue_scripts() {
 	wp_enqueue_style(
 	    'main',
         CAPSLOCK_THEME_ASSETS_DIR . 'css/' . capslock_diff_by_env( 'main.min.css', 'main.css' ),
@@ -69,4 +72,4 @@ function capslock_enqueue_script() {
         true
     );
 }
-add_action( 'wp_enqueue_scripts', 'capslock_enqueue_script' );
+add_action( 'wp_enqueue_scripts', 'capslock_enqueue_scripts' );

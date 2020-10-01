@@ -3,7 +3,6 @@ const gulp = require("gulp");
 const sass = require("gulp-sass");
 
 const sourcemaps = require("gulp-sourcemaps");
-const browserSync = require("browser-sync").create();
 
 sass.compiler = require("node-sass");
 
@@ -53,19 +52,9 @@ const jsBuild = () => {
         .pipe(gulp.dest(JSFilesPath));
 };
 
-const liveReload = () => {
-    browserSync.init({
-        server: "./"
-    });
-
-    gulp.watch(SASSFilesPath, sassBuild).on("change", browserSync.reload);
-    gulp.watch("./*.html").on("change", browserSync.reload);
-};
-
 gulp.task("watch", () => {
     gulp.watch(SASSFilesPath, sassBuild);
 });
-gulp.task("reload", liveReload);
 gulp.task("buildJS", jsBuild);
 gulp.task("buildCSS", cssBuild);
 gulp.task("build", gulp.parallel([cssBuild, jsBuild]));
