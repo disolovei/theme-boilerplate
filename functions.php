@@ -61,15 +61,29 @@ function capslock_enqueue_scripts() {
 	wp_deregister_script( 'wp-embed' );
 	wp_deregister_script( 'jquery' );
 
-	wp_register_script(  'jquery', CAPSLOCK_THEME_ASSETS_DIR . 'js/modules/jquery.min.js', null, '1.7.2' );
+//	wp_register_script(  'jquery', CAPSLOCK_THEME_ASSETS_DIR . 'js/modules/jquery.min.js', null, '1.7.2' );
 	
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script(
-	    'main',
+	    'main-defer-async',
         CAPSLOCK_THEME_ASSETS_DIR . 'js/' . capslock_diff_by_env( 'main.min.js', 'main.js' ),
-        ['jquery'],
+//        ['jquery'],
+        null,
         capslock_diff_by_env( CAPSLOCK_THEME_VERSION, time() ),
         true
     );
 }
 add_action( 'wp_enqueue_scripts', 'capslock_enqueue_scripts' );
+
+function capslock_defer_async_script( $tag, $handle ) {
+	if ( false !== strpos( $handle, '-async' ) ) {
+		$tag = str_replace( '<script', '<script async', $tag );
+	}
+
+	if ( false !== strpos( $handle, '-defer' ) ) {
+		$tag = str_replace( '<script', '<script defer', $tag );
+	}
+
+	return $tag;
+}
+add_filter( 'script_loader_tag', 'capslock_defer_async_script', 20, 2 );
