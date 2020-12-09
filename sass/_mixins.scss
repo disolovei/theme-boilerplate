@@ -1,0 +1,60 @@
+@mixin background-image($file_with_ext) {
+  background-image: url("../img/#{$file_with_ext}");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+@mixin media-max($breakpoint) {
+  @media screen and (max-width: $breakpoint+px) {
+    @content
+  }
+}
+
+@mixin media-min($breakpoint) {
+  @media screen and (min-width: $breakpoint+px) {
+    @content
+  }
+}
+
+@mixin media-between($start, $end) {
+  @media screen and (min-width: $start+px) and (max-width: $end+px) {
+    @content
+  }
+}
+
+@mixin media-max-retina($breakpoint) {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (max-width: $breakpoint+px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (max-width: $breakpoint+px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (max-width: $breakpoint+px),
+  only screen and (        min-device-pixel-ratio: 2)      and (max-width: $breakpoint+px),
+  only screen and (                min-resolution: 192dpi) and (max-width: $breakpoint+px),
+  only screen and (                min-resolution: 2dppx)  and (max-width: $breakpoint+px) {
+    @content
+  }
+}
+
+@mixin media-min-retina($breakpoint) {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: $breakpoint+px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: $breakpoint+px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: $breakpoint+px),
+  only screen and (        min-device-pixel-ratio: 2)      and (min-width: $breakpoint+px),
+  only screen and (                min-resolution: 192dpi) and (min-width: $breakpoint+px),
+  only screen and (                min-resolution: 2dppx)  and (min-width: $breakpoint+px) {
+    @content
+  }
+}
+
+@mixin media-between-retina($start, $end) {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: $start+px) and (min-width: $end+px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: $start+px) and (min-width: $end+px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: $start+px) and (min-width: $end+px),
+  only screen and (        min-device-pixel-ratio: 2)      and (min-width: $start+px) and (min-width: $end+px),
+  only screen and (                min-resolution: 192dpi) and (min-width: $start+px) and (min-width: $end+px),
+  only screen and (                min-resolution: 2dppx)  and (min-width: $start+px) and (min-width: $end+px) {
+    @content
+  }
+}
