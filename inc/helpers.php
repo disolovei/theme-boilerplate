@@ -15,6 +15,12 @@ function capclock_echo_if_true( $condition, $value, $otherwise_return = null ) {
 	echo capclock_return_if_true( $condition, $value, $otherwise_return );
 }
 
-function capslock_diff_by_env( $prod_value = '', $stage_value = '' ) {
-    return capslock_is_prod() ? $prod_value : $stage_value;
+function capslock_debug( $data ) {
+	echo '<pre>';
+	    print_r( $data );
+	echo '</pre>';
+}
+
+function capslock_is_webp_supported() {
+	return false !== strpos( $_SERVER['HTTP_ACCEPT'], 'image/webp' ) || false !== strpos( $_SERVER['HTTP_USER_AGENT'], ' Chrome/' );
 }
