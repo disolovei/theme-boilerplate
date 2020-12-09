@@ -1,89 +1,65 @@
 <?php
 /**
- * Constants definition.
- */
-define( 'CAPSLOCK_THEME_VERSION', '0.8' );
-define( 'CAPSLOCK_IS_PROD_ENV', false );
-define( 'CAPSLOCK_THEME_DIR_URI', get_template_directory_uri() . '/' );
-define( 'CAPSLOCK_THEME_ASSETS_DIR', CAPSLOCK_THEME_DIR_URI . 'assets/' );
-
-function capslock_is_prod() {
-    return CAPSLOCK_IS_PROD_ENV;
-}
-
-/**
  * Include dependencies.
  */
 include_once 'inc/helpers.php';
 include_once 'inc/template-functions.php';
-//include_once 'inc/shortcodes.php';
-// include_once 'inc/register-entities.php';
 include_once 'inc/theme-setup.php';
-
-/**
- * Optional files.
- */
-// include_once 'inc/breadcrumbs.php';
-// include_once 'inc/check-required-plugins.php';
-include_once 'inc/classes/class-capslock-cache.php';
-include_once 'inc/cache.php';
-include_once 'inc/acf-cache.php';
-
-/**
- * Work with scrips and styles.
- */
-
-if ( ! current_theme_supports( 'html5', 'script' ) ) {
-	function capslock_remove_script_tag_type( $tag ) {
-		return preg_replace( '/ type=(\'|\")text\/javascript\1/', '', $tag );
-	}
-	add_filter( 'script_loader_tag', 'capslock_remove_script_tag_type' );
-}
-
-if ( ! current_theme_supports( 'html5', 'style' ) ) {
-	function capslock_remove_style_tag_type( $tag ) {
-		return preg_replace( '/ type=(\'|\")text\/style\1/', '', $tag );
-	}
-	add_filter( 'style_loader_tag', 'capslock_remove_style_tag_type' );
-}
 
 /**
  * Include scripts
  */
+add_action( 'wp_enqueue_scripts', 'capslock_enqueue_scripts' );
 function capslock_enqueue_scripts() {
-	wp_enqueue_style(
-	    'main',
-        CAPSLOCK_THEME_ASSETS_DIR . 'css/' . capslock_diff_by_env( 'main.min.css', 'main.css' ),
-        null,
-        capslock_diff_by_env( CAPSLOCK_THEME_VERSION, time() )
-    );
-
 	wp_deregister_script( 'wp-embed' );
 	wp_deregister_script( 'jquery' );
+	wp_deregister_style( 'wp-block-library' );
 
-//	wp_register_script(  'jquery', CAPSLOCK_THEME_ASSETS_DIR . 'js/modules/jquery.min.js', null, '1.7.2' );
-	
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script(
-	    'main-defer-async',
-        CAPSLOCK_THEME_ASSETS_DIR . 'js/' . capslock_diff_by_env( 'main.min.js', 'main.js' ),
-//        ['jquery'],
-        null,
-        capslock_diff_by_env( CAPSLOCK_THEME_VERSION, time() ),
-        true
-    );
+	wp_register_style( 'main-async', capslock_get_style_url( 'main' ), [], capslock_get_script_version() );
+
+	wp_register_script(  'jquery', capslock_get_script_module_url( 'jquery' ), null, '1.7.2' );
+	wp_register_script(  'main-defer-async', capslock_get_script_url( 'main' ), null, capslock_get_script_version(), true );
+
+	wp_enqueue_script( 'main-defer-async' );
 }
-add_action( 'wp_enqueue_scripts', 'capslock_enqueue_scripts' );
 
+add_action( 'wp_footer', 'capslock_wp_footer' );
+function capslock_wp_footer() {
+	wp_enqueue_style( 'main-async' );
+}
+
+add_action( 'capslock_open_head', 'capslock_preload_assets' );
+function capslock_preload_assets() {
+
+}
+
+add_filter( 'script_loader_tag', 'capslock_defer_async_script', 20, 2 );
 function capslock_defer_async_script( $tag, $handle ) {
 	if ( false !== strpos( $handle, '-async' ) ) {
-		$tag = str_replace( '<script', '<script async', $tag );
+		$tag = str_replace( '<script', '<script async="true"', $tag );
 	}
 
 	if ( false !== strpos( $handle, '-defer' ) ) {
-		$tag = str_replace( '<script', '<script defer', $tag );
+		$tag = str_replace( '<script', '<script defer="true"', $tag );
 	}
 
 	return $tag;
 }
-add_filter( 'script_loader_tag', 'capslock_defer_async_script', 20, 2 );
+
+add_filter( 'style_loader_tag', 'capslock_style_loader_tag', 10, 3 );
+function capslock_style_loader_tag( $tag, $handle, $href ) {
+	if ( false !== strpos( $handle, '-async' ) ) {
+		return '<link rel="preload" href="' . $href . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'"><noscript>' . $tag . '</noscript>';
+	}
+
+	return $tag;
+}
+
+add_filter( 'body_class', 'capslock_webp_check_support' );
+function capslock_webp_check_support( $classes ) {
+	if ( capslock_is_webp_supported() ) {
+		$classes[''] = 'with-webp';
+	}
+
+	return $classes;
+}

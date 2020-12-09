@@ -1,15 +1,55 @@
 <?php
+
+/**
+ * Constants definition.
+ */
+define( 'CAPSLOCK_THEME_VERSION', '0.8' );
+define( 'CAPSLOCK_THEME_ENV', 'development' );
+//define( 'CAPSLOCK_THEME_ENV', 'production' );
+define( 'CAPSLOCK_THEME_DIR_URI', trailingslashit( get_stylesheet_directory_uri() ) );
+define( 'CAPSLOCK_THEME_DIR', trailingslashit( get_stylesheet_directory() ) );
+define( 'CAPSLOCK_THEME_ASSETS_URI', trailingslashit( CAPSLOCK_THEME_DIR_URI . 'assets' ) );
+define( 'CAPSLOCK_SCRIPT_VERSION', 'production' === CAPSLOCK_THEME_ENV ? CAPSLOCK_THEME_VERSION : time() );
+
+function capslock_is_prod() {
+	return 'production' === CAPSLOCK_THEME_ENV;
+}
+
+function capslock_diff_by_env( $prod_value = '', $stage_value = '' ) {
+	return capslock_is_prod() ? $prod_value : $stage_value;
+}
+
+function capslock_get_style_url( $filename ) {
+	return CAPSLOCK_THEME_ASSETS_URI .  'css/' . $filename . capslock_diff_by_env( '.min.css', '.css' );
+}
+
+function capslock_get_style_module_url( $filename ) {
+	return CAPSLOCK_THEME_ASSETS_URI .  'css/modules/' . $filename . '.min.css';
+}
+
+function capslock_get_script_url( $filename ) {
+	return CAPSLOCK_THEME_ASSETS_URI .  'js/' . $filename . capslock_diff_by_env( '.min.js', '.js' );
+}
+
+function capslock_get_script_module_url( $filename ) {
+	return CAPSLOCK_THEME_ASSETS_URI .  'js/modules/' . $filename . '.min.js';
+}
+
+function capslock_get_script_version() {
+	return CAPSLOCK_SCRIPT_VERSION;
+}
+
 /**
  * Theme supports setup.
  */
 add_theme_support( 'html5', [
-    'search-form',
-    'comment-form',
-    'comment-list',
-    'gallery',
-    'caption',
-    'script',
-    'style',
+	'search-form',
+	'comment-form',
+	'comment-list',
+	'gallery',
+	'caption',
+	'script',
+	'style',
 ] );
 add_theme_support( 'post-thumbnails' );
 add_theme_support( 'custom-logo' );
