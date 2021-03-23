@@ -9,18 +9,14 @@ include_once 'inc/template-functions.php';
 /**
  * Include scripts
  */
-add_action( 'wp_enqueue_scripts', function() {
-	wp_deregister_script( 'wp-embed' );
-	wp_deregister_script( 'jquery' );
-	wp_deregister_style( 'wp-block-library' );
+add_action( 'capslock_open_head', function() {
+	Capslock_Asset::register_style( 'main-async', Capslock_Asset::get_style_url( 'main' ), [], Capslock_Helper::get_script_version(), '', true );
 
-	wp_register_style( 'main-async', Capslock_Asset::get_style_url( 'main' ), [], Capslock_Helper::get_script_version() );
-
-	wp_register_script(  'jquery', Capslock_Asset::get_script_module_url( 'jquery' ), null, '1.7.2' );
-	wp_register_script(  'main-defer-async', Capslock_Asset::get_script_url( 'main' ), null, Capslock_Helper::get_script_version(), true );
+	wp_enqueue_script(  'jquery', Capslock_Asset::get_script_module_url( 'jquery' ), null, '1.7.2', true );
+	Capslock_Asset::register_script(  'main-defer-async', Capslock_Asset::get_script_url( 'main' ), null, Capslock_Helper::get_script_version(), true, true );
 
 	wp_enqueue_script( 'main-defer-async' );
-} );
+}, 1 );
 
 
 add_action( 'wp_footer', function() {

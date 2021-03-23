@@ -50,3 +50,9 @@ remove_action( 'wp_head', 'rest_output_link_wp_head' );
 remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 remove_action( 'wp_head', 'wp_resource_hints', 2 );
+
+add_action( 'wp_enqueue_scripts', function() {
+	wp_deregister_script( 'wp-embed' );
+	wp_deregister_script( 'jquery' );
+	wp_deregister_style( 'wp-block-library' );
+} );
