@@ -2,9 +2,9 @@
 /**
  * Include dependencies.
  */
-include_once 'inc/helpers.php';
-include_once 'inc/template-functions.php';
+include_once 'inc/autoload.php';
 include_once 'inc/theme-setup.php';
+include_once 'inc/template-functions.php';
 
 /**
  * Include scripts
@@ -14,10 +14,10 @@ add_action( 'wp_enqueue_scripts', function() {
 	wp_deregister_script( 'jquery' );
 	wp_deregister_style( 'wp-block-library' );
 
-	wp_register_style( 'main-async', capslock_get_style_url( 'main' ), [], capslock_get_script_version() );
+	wp_register_style( 'main-async', Capslock_Asset::get_style_url( 'main' ), [], Capslock_Helper::get_script_version() );
 
-	wp_register_script(  'jquery', capslock_get_script_module_url( 'jquery' ), null, '1.7.2' );
-	wp_register_script(  'main-defer-async', capslock_get_script_url( 'main' ), null, capslock_get_script_version(), true );
+	wp_register_script(  'jquery', Capslock_Asset::get_script_module_url( 'jquery' ), null, '1.7.2' );
+	wp_register_script(  'main-defer-async', Capslock_Asset::get_script_url( 'main' ), null, Capslock_Helper::get_script_version(), true );
 
 	wp_enqueue_script( 'main-defer-async' );
 } );
@@ -54,7 +54,7 @@ add_filter( 'style_loader_tag', function( $tag, $handle, $href ) {
 }, 10, 3 );
 
 add_filter( 'body_class', function( $classes ) {
-	if ( capslock_is_webp_supported() ) {
+	if ( Capslock_Helper::is_webp_supported() ) {
 		$classes[''] = 'with-webp';
 	}
 
