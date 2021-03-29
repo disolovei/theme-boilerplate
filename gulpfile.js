@@ -41,7 +41,7 @@ const cssBuild = () => {
 
 const jsBuild = () => {
     return require("gulp-merge")(
-            gulp.src([JSFilesPath + "/**/*.js", "!" + JSFilesPath + "/**/*.min.js", "!" + JSFilesPath + "/modules/**/*.js"]),
+            gulp.src([JSFilesPath + "/**/*.js", "!" + JSFilesPath + "/**/*.min.js", "!" + JSFilesPath + "/modules/**/*.js", "!" + JSFilesPath + "/*.test.js"]),
             gulp.src(require("path").join(__dirname, 'node_modules', '@babel', 'polyfill', 'browser.js'))
         )
         .pipe(sourcemaps.init())
