@@ -1,45 +1,42 @@
 {
-  "name": "scss",
+  "name": "sass-building",
   "version": "1.0.0",
-  "description": "",
+  "description": "Watching, build and live reloading .scss and .sass files",
   "main": "index.js",
   "scripts": {
-    "watch": "gulp watch",
     "build": "gulp build",
-    "reload": "gulp reload",
-    "buildJS": "gulp buildJS",
+    "dev": "gulp dev",
     "buildCSS": "gulp buildCSS",
-    "test": "jest"
+    "buildSASS": "gulp buildSASS",
+    "buildJS": "gulp buildJS"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=16"
+  },
+  "engineStrict": true,
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
-    "browser-sync": "^2.26.14",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
+    "babel": "^6.23.0",
+    "dotenv": "^10.0.0",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-merge": "^0.1.1",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
+    "gulp-sass": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
-    "jest": "^26.6.3",
-    "node-sass": "^4.14.1"
-  },
-  "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "@babel/runtime": "^7.13.10",
-    "normalize-scss": "^7.0.1"
-  },
-  "jest": {
-    "globals": {
-      "__DEV__": true
-    },
-    "testRegex": "./assets/js(/tests/|/).*.test.js$"
+    "node-sass": "^6.0.1",
+    "normalize-scss": "^7.0.1",
+    "sass": "^1.38.1"
   }
 }
